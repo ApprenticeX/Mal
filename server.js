@@ -12,10 +12,18 @@ const images = [
 
 app.get("/", (req, res) => {
     const img = images[Math.floor(Math.random() * images.length)];
+    const url = `${img}?t=${Date.now()}`;
 
-    console.log(`Serving ${img}`);
+    console.log(`Serving ${url}`);
 
-    res.redirect(img);
+    res.set({
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+        "Surrogate-Control": "no-store"
+    });
+
+    res.redirect(302, url);
 });
 
 const PORT = 3000;
